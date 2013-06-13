@@ -717,9 +717,10 @@
 
 						// fixes issue #24, animation changed as of jQuery 1.7.2
 						// also addresses issue #29, using easing breaks "linear"
-						if (methods.compareVersions.apply(null, [$().jquery, "1.7.2"]) >= 0 && !($.easing["easeOutBack"])) {
+						//if (methods.compareVersions.apply(null, [$().jquery, "1.7.2"]) >= 0 && !($.easing["easeOutBack"])) {
+							// remove "if" because conflict with jquery ui - Fix by https://github.com/kwilsbach
 							newBearing = passedData.start + ((bearing - passedData.start) * newBearing);
-						}
+						//}
 
 						newBearing = methods.normalize.apply(null, [newBearing]);
 						data.dragBearing = newBearing;
