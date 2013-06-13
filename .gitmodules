@@ -1,0 +1,3 @@
+[submodule "jquery.threedubmedia"]
+	path = jquery.threedubmedia
+	url = git://github.com/threedubmedia/jquery.threedubmedia.git

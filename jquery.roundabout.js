@@ -266,14 +266,15 @@
 								alert("You do not have the drop plugin loaded.");
 							}
 						} else {
+                                                        // added ".roundabout" namespace for unbind
 							self
-								.drag(function(e, properties) {
+								.drag(".roundabout", function(e, properties) {
 									var data = self.data("roundabout"),
 									    delta = (data.dragAxis.toLowerCase() === "x") ? "deltaX" : "deltaY";
 									methods.stopAnimation.apply(self);
 									methods.setBearing.apply(self, [data.dragBearing + properties[delta] / data.dragFactor]);
 								})
-								.drop(function(e) {
+								.drop(".roundabout", function(e) {
 									var data = self.data("roundabout"),
 									    method = methods.getAnimateToMethod(data.dropAnimateTo);
 									methods.allowAnimation.apply(self);
@@ -283,7 +284,7 @@
 						}
 
 						// on mobile
-						self
+						/*self
 							.each(function() {
 								var element = $(this).get(0),
 								    data = $(this).data("roundabout"),
@@ -311,6 +312,32 @@
 										data.dragBearing = data.period * methods.getNearestChild.apply($(this));
 									}, false);
 								}
+							});*/
+                                                            
+                                                self
+							.each(function() {
+								var $this = $(this),
+								    data = $this.data("roundabout"),
+								    page = (data.dragAxis.toLowerCase() === "x") ? "pageX" : "pageY",
+								    method = methods.getAnimateToMethod(data.dropAnimateTo);
+                                                                    
+                                                                $this.on("touchstart.roundabout", function(e) {
+                                                                    e = e.originalEvent;
+                                                                    data.touchMoveStartPosition = e.touches[0][page];
+                                                                }).on("touchmove.roundabout", function(e) {
+                                                                    e = e.originalEvent;
+                                                                    var delta = (e.touches[0][page] - data.touchMoveStartPosition) / data.dragFactor;
+                                                                    e.preventDefault();
+                                                                    methods.stopAnimation.apply($(this));
+                                                                    methods.setBearing.apply($(this), [data.dragBearing + delta]);
+                                                                }).on("touchend.roundabout", function(e) {
+                                                                    e = e.originalEvent;
+                                                                    e.preventDefault();
+                                                                    methods.allowAnimation.apply($(this));
+                                                                    method = methods.getAnimateToMethod(data.dropAnimateTo);
+                                                                    methods[method].apply($(this), [data.dropDuration, data.dropEasing, data.dropCallback]);
+                                                                    data.dragBearing = data.period * methods.getNearestChild.apply($(this));
+                                                                });
 							});
 					}
 
