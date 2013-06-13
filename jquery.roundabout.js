@@ -1207,7 +1207,33 @@
 
 			// nothing was triggered, versions are the same
 			return 0;
-		}
+		},
+                        
+                //TODO Check for memory leaks
+                destroy: function() {
+                    return this.each(function() {
+                        var $this = $(this),
+                            settings = $this.data('roundabout');
+                            
+                        if (settings) {
+                            $this.unbind(".roundabout")
+                                .removeClass("roundabout-holder")
+                                .removeData("roundabout");
+                            
+                            var $children = $this.children(settings.childSelector);
+                            $children.unbind(".roundabout").each(function(){
+                                var $child = $(this);
+                                if ($child.data("roundabout")) {
+                                    $child.width($child.data("roundabout").startWidth)
+                                        .height($child.data("roundabout").startHeight)
+                                        .css('font-size', $child.data("roundabout").startFontSize)
+                                        .removeData("roundabout");
+                                }
+                            }).removeClass("roundabout-moveable-item roundabout-in-focus")
+                                .css({position: ''});
+                        }
+                    });
+                }
 	};
 
 

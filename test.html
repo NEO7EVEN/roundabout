@@ -6,15 +6,23 @@
         <script type="text/javascript" src="http://code.jquery.com/jquery-1.10.1.min.js"></script>
         <script type="text/javascript" src="jquery.threedubmedia/event.drag/jquery.event.drag.js"></script>
         <script type="text/javascript" src="jquery.threedubmedia/event.drop/jquery.event.drop.js"></script>
-        <script type="text/javascript" src="jquery.roundabout.min.js"></script>
+        <script type="text/javascript" src="jquery.roundabout.js"></script>
         <script type="text/javascript">
             $(document).ready(function(){
-                $('.add-roundabout').roundabout({
-                    enableDrag: true
+                
+                $('#attach').click(function(){
+                    
+                    $('.add-roundabout').roundabout('destroy').roundabout({
+                        enableDrag: true
+                    });
                 });
                 
-                $('#destroy').click(function(){
-                    $('.add-roundabout').roundabout('destroy');
+                $('#left').click(function(){
+                    $('.add-roundabout').roundabout('animateToNextChild');
+                });
+                
+                $('#right').click(function(){
+                    $('.add-roundabout').roundabout('animateToPreviousChild');
                 });
             });
         </script>
@@ -52,7 +60,9 @@
             </ul>
         </div>
         <div>
-            <input type="button" id="destroy" value="DESTROY" />
+            <input type="button" id="left" value="LEFT" />
+            <input type="button" id="attach" value="ATTACH" />
+            <input type="button" id="right" value="RIGHT" />
         </div>
     </body>
 </html>
